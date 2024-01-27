@@ -3,7 +3,7 @@
 import { LiveKitRoom } from "@livekit/components-react";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import "@livekit/components-styles";
 
 const RoomLayout = ({
@@ -17,12 +17,14 @@ const RoomLayout = ({
   const { roomId } = params;
   const [token, setToken] = useState("");
   const { user } = useUser();
+  const searchParams = useSearchParams();
+  const owner = searchParams.get("owner");
 
   useEffect(() => {
     (async () => {
       try {
         const resp = await fetch(
-          `/api/livekit?room=${roomId}&username=${user?.username}`
+          `/api/livekit?room=${roomId}&username=${owner || user?.username}`
         );
         const data = await resp.json();
         setToken(data.token);
