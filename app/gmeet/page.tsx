@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useUser } from "@clerk/nextjs";
 import { CopyIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,7 @@ import { v4 as uuid } from "uuid";
 const MainPage = () => {
   const [value, setValue] = useState("");
   const router = useRouter();
+  const { user } = useUser();
 
   const handleClick = () => {
     if (value.length === 0) {
@@ -26,7 +28,7 @@ const MainPage = () => {
     const id = uuid();
     const roomId = id.slice(0, 8);
     window.navigator.clipboard.writeText(roomId);
-    toast.success((t) => (
+    toast((t) => (
       <span className="flex items-center">
         Your Room Id is {roomId}
         <button
@@ -41,7 +43,7 @@ const MainPage = () => {
       </span>
     ));
     setTimeout(() => {
-      router.push(`/room/${roomId}`);
+      router.push(`/room/${roomId}?owner=${user?.username}`);
     }, 5000);
   };
 

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Toaster } from "react-hot-toast";
+import ModalProvider from "@/components/providers/modal-provider";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={cn("dark antialiased", poppins.className)}>
           <Toaster />
+          <ModalProvider />
           {children}
         </body>
       </html>
